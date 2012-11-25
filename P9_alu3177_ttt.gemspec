@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = P9Alu3177Ttt::VERSION
   gem.authors       = ["Fernando González López-Peñalver"]
   gem.email         = ["alu0100256543@ull.edu.es"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Juego del tres en raya.}
+  gem.summary       = %q{Permite crear partidas del tres en raya. Dispone de dos opoenentes controlados por computador.}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
