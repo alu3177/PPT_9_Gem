@@ -1,4 +1,4 @@
-require './P9_alu3177_ttt/player'
+require 'P9_alu3177_ttt/player'
 
 module P9Alu3177Ttt
   class HumanPlayer < Player
