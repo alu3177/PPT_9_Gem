@@ -95,6 +95,10 @@ module P9Alu3177Ttt
       moves == MOVES
     end
 
+    def clone
+      Board.new @squares.clone
+    end
+
     BOARD =<<EOS
 
   +---+---+---+
@@ -134,16 +138,8 @@ module P9Alu3177Ttt
       until @board.won?
         @board[@x_player.move(@board)] = @x_player.mark
         break if @board.won?
-        # VERBOSE
-        puts "X"
-        puts @board
-        $stdin.gets
 
         @board[@o_player.move(@board)] = @o_player.mark
-        # VERBOSE
-        puts "O"
-        puts @board
-        $stdin.gets
       end
 
       @o_player.finish @board

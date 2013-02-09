@@ -5,28 +5,19 @@ module P9Alu3177Ttt
     INFINITE = 99999
     def move ( board )
         mark == "X" ? playerType = :max : playerType = :min
-        board.blank? ? "b2" : minmax( board, playerType, 0 ) # First game turn move is allways b2
+        board.blank? ? "b2" : alphabeta( board, playerType, 0 ) # First game turn move is allways b2
     end
 
-    def heuristic_value ( board )
-        return -1 if board.won? == "O"
-        return 0 if board.won? == " "
-        return 1 if board.won? == "X"
-    end
-
-    def clone_board ( board )
-        result = Board.new([" "] * 9)
-        board.squares.each_with_index do |cell, i|
-            result[Board.index_to_name(i)] = cell
-        end
-        result
+    def heuristic_value ( won )
+        return -1 if won == "O"
+        return 0 if won == " "
+        return 1 if won == "X"
     end
 
     def minmax ( board, player, depth ) # Current status of the board and player (min or max)
         if board.won?
-            return heuristic_value( board ) 
+            return heuristic_value( board.won? )
         end
-
         # Setting alfa, current player mark and next player (min or max)
         if player == :max
             alfa = -INFINITE
@@ -37,29 +28,45 @@ module P9Alu3177Ttt
             mark = "O"
             nextPlayer = :max
         end
-        moves = board.moves
         bestMove = ""
-        moves.each do |move|
-            nextBoard = clone_board(board)
+        board.moves.each do |move|
+            nextBoard = board.clone
             nextBoard[move] = mark
             prevAlfa = alfa
-
             player == :max ? alfa = [alfa, minmax( nextBoard, nextPlayer, depth+1 )].max :
                              alfa = [alfa, minmax( nextBoard, nextPlayer, depth+1 )].min
-            bestMove = move if prevAlfa != alfa and depth == 0
+            bestMove = move if depth == 0 and prevAlfa != alfa                    
         end
         depth > 0 ? alfa : bestMove
     end
 
-    def finish( final_board )
-        puts final_board
-        if final_board.won? == @mark
-            print "MinMax WIN!.\n\n"
-        elsif final_board.won? == " "
-            print "Tie game.\n\n"
-        else
-            print "MinMax Loose!\n\n"
+    def alphabeta ( board, player, depth, alpha = -INFINITE, beta=INFINITE )
+        if board.won?
+            return heuristic_value( board.won? )
         end
+        bestMove = ""
+        if player == :max
+            board.moves.each do |move|
+                nextBoard = board.clone
+                nextBoard[move] = "X"
+                prevAlpha = alpha
+                alpha = [alpha, alphabeta( nextBoard, :min, depth+1, alpha, beta )].max
+                bestMove = move if depth == 0 and prevAlpha != alpha
+                break if beta <= alpha
+            end
+            depth > 0 ? alpha : bestMove
+        elsif player == :min
+            board.moves.each do |move|
+                nextBoard = board.clone
+                nextBoard[move] = "O"
+                prevBeta = beta
+                beta = [beta, alphabeta( nextBoard, :max, depth+1, alpha, beta )].min
+                bestMove = move if depth == 0 and prevBeta != beta
+                break if beta <= alpha
+            end
+            depth > 0 ? beta : bestMove
+        end
+
     end
 
   end

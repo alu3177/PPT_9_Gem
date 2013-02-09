@@ -11,7 +11,7 @@ require 'P9_alu3177_ttt'
 #  game.play
 #end
 
-game = P9Alu3177Ttt::Game.new P9Alu3177Ttt::SmartPlayer,
+game = P9Alu3177Ttt::Game.new P9Alu3177Ttt::HumanPlayer,
             P9Alu3177Ttt::MinMaxPlayer
 
 game.play
