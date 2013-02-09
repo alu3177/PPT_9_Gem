@@ -10,7 +10,7 @@ module P9Alu3177Ttt
       raise NotImplementedError, "Player subclasses must define move()."
     end
     
-    def finish( final_board )  
+    def finish( final_board )
     end
   end
 end
